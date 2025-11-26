@@ -22,8 +22,8 @@ in
     # configure jj
     programs.jujutsu.settings = {
       user = {
-        name = config.nyxed-home.vcsName;
-        email = config.nyxed-home.vcsEmail;
+        name = config.nyxed-home-dev.vcsName;
+        email = config.nyxed-home-dev.vcsEmail;
       };
 
       ui = {
