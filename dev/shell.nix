@@ -15,7 +15,7 @@ in
       ls = "eza";
     };
     home.sessionVariables = {
-      PAGER = "less -F";
+      PAGER = "less -FR";
     };
 
     home.packages = with pkgs; [
