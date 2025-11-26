@@ -93,6 +93,9 @@ in
           "Switch to Desktop 4" = "Alt+4";
           "Switch to Desktop 5" = "Alt+5";
 
+          "Window One Desktop to the Left" = "Ctrl+Shift+H";
+          "Window One Desktop to the Right" = "Ctrl+Shift+L";
+
           "Window Close" = "Alt+Q";
         };
       };
