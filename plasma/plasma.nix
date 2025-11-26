@@ -2,24 +2,18 @@
   pkgs,
   lib,
   config,
+  plasma-manager,
   ...
-}@inputs:
+}:
 let
-  cfg = config.nyxed-home;
+  cfg = config.nyxed-home-plasma;
 in
 {
-  imports = lib.optional cfg.desktopEnable [
-    inputs.plasma-manager.homeManagerModules.plasma-manager
+  imports = [
+    plasma-manager.homeManagerModules.plasma-manager
   ];
 
-  config = lib.mkIf cfg.desktopEnable {
-    assertions = [
-      {
-        assertion = cfg.enable;
-        message = "Must enable nyxed-home to enable nyxed-home desktop.";
-      }
-    ];
-
+  config = lib.mkIf cfg.enable {
     home.packages = [
       pkgs.kdePackages.krohnkite
     ];
@@ -37,6 +31,7 @@ in
           options = [ "caps:escape" ];
         };
 
+        # TODO: take touchpad name, productID, and vendorID as an option
         touchpads = [
           {
             # framework laptop touchpad

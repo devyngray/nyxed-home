@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  cfg = config.nyxed-home;
+  cfg = config.nyxed-home-dev;
 in
 {
   config = lib.mkIf cfg.enable {
