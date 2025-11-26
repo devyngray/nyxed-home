@@ -1,12 +1,6 @@
 { lib, ... }:
 {
-  imports = [
-    ./desktop.nix
-    ./ghostty.nix
-    ./helix.nix
-    ./shell.nix
-    ./vcs.nix
-  ];
+  imports = [ ./modules ];
 
   options.nyxed-home = {
     enable = lib.mkEnableOption "Enable nyxed-home home-manager module";
