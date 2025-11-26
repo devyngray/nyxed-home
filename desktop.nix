@@ -3,11 +3,15 @@
   lib,
   config,
   ...
-}:
+}@inputs:
 let
   cfg = config.nyxed-home;
 in
 {
+  imports = lib.optional cfg.desktopEnable [
+    inputs.plasma-manager.homeManagerModules.plasma-manager
+  ];
+
   config = lib.mkIf cfg.desktopEnable {
     assertions = [
       {
@@ -16,11 +20,11 @@ in
       }
     ];
 
-    home.packages = lib.mkIf config.nyxed-home.desktop [
+    home.packages = [
       pkgs.kdePackages.krohnkite
     ];
 
-    programs.plasma = lib.mkIf config.nyxed-home.desktop {
+    programs.plasma = {
       enable = true;
       overrideConfig = true;
 
