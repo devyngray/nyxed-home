@@ -2,17 +2,12 @@
   pkgs,
   lib,
   config,
-  plasma-manager,
   ...
 }:
 let
   cfg = config.nyxed-home-plasma;
 in
 {
-  imports = [
-    plasma-manager.homeManagerModules.plasma-manager
-  ];
-
   config = lib.mkIf cfg.enable {
     home.packages = [
       pkgs.kdePackages.krohnkite
