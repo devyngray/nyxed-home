@@ -7,7 +7,7 @@ in
     programs.ghostty = {
       enable = true;
       settings = {
-        theme = "GruvboxDark";
+        theme = "Gruvbox Dark";
         mouse-hide-while-typing = true;
         keybind = [
           "ctrl+b>h=goto_split:left"
