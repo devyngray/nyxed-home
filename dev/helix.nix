@@ -29,6 +29,20 @@ in
       pkgs.rust-analyzer
       pkgs.clippy
       pkgs.rustfmt
+
+      # typescript
+      pkgs.typescript-language-server
+      pkgs.prettier
+
+      # tailwind
+      pkgs.tailwindcss-language-server
+
+      # vscode-css-language-server
+      # vscode-eslint-language-server
+      # vscode-html-language-server
+      # vscode-json-language-server
+      # vscode-markdown-language-server
+      pkgs.vscode-langservers-extracted
     ];
 
     # set helix to default editor
@@ -92,6 +106,113 @@ in
           }
           "ruff"
         ];
+      }
+
+      # html lsp
+      {
+        name = "html";
+        language-servers = [ "vscode-html-language-server" ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # css lsp
+      {
+        name = "css";
+        language-servers = [ "vscode-css-language-server" ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # json lsp
+      {
+        name = "json";
+        language-servers = [ "vscode-json-language-server" ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # javascript lsp
+      {
+        name = "javascript";
+        language-servers = [
+          "typescript-language-server"
+          "tailwindcss-ls"
+          "vscode-eslint-language-server"
+        ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # typescript lsp
+      {
+        name = "typescript";
+        language-servers = [
+          "typescript-language-server"
+          "tailwindcss-ls"
+          "vscode-eslint-language-server"
+        ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # jsx lsp
+      {
+        name = "jsx";
+        language-servers = [
+          "typescript-language-server"
+          "tailwindcss-ls"
+          "vscode-eslint-language-server"
+        ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
+      }
+
+      # tsx lsp
+      {
+        name = "tsx";
+        language-servers = [
+          "typescript-language-server"
+          "tailwindcss-ls"
+          "vscode-eslint-language-server"
+        ];
+        formatter = {
+          command = "prettier";
+          args = [
+            "--stdin-filepath"
+            "%{buffer_name}"
+          ];
+        };
       }
     ];
 
