@@ -28,7 +28,6 @@ in
 
       ui = {
         default-command = "shortlog";
-        diff-formatter = "git";
       };
 
       revset-aliases = {
