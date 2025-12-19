@@ -41,8 +41,11 @@ in
       # vscode-eslint-language-server
       # vscode-html-language-server
       # vscode-json-language-server
-      # vscode-markdown-language-server
       pkgs.vscode-langservers-extracted
+
+      # markdown
+      pkgs.marksman
+      pkgs.python3Packages.mdformat
     ];
 
     # set helix to default editor
@@ -111,6 +114,7 @@ in
       # html lsp
       {
         name = "html";
+        auto-format = true;
         language-servers = [ "vscode-html-language-server" ];
         formatter = {
           command = "prettier";
@@ -124,6 +128,7 @@ in
       # css lsp
       {
         name = "css";
+        auto-format = true;
         language-servers = [ "vscode-css-language-server" ];
         formatter = {
           command = "prettier";
@@ -137,6 +142,7 @@ in
       # json lsp
       {
         name = "json";
+        auto-format = true;
         language-servers = [ "vscode-json-language-server" ];
         formatter = {
           command = "prettier";
@@ -150,6 +156,7 @@ in
       # javascript lsp
       {
         name = "javascript";
+        auto-format = true;
         language-servers = [
           "typescript-language-server"
           "tailwindcss-ls"
@@ -167,6 +174,7 @@ in
       # typescript lsp
       {
         name = "typescript";
+        auto-format = true;
         language-servers = [
           "typescript-language-server"
           "tailwindcss-ls"
@@ -184,6 +192,7 @@ in
       # jsx lsp
       {
         name = "jsx";
+        auto-format = true;
         language-servers = [
           "typescript-language-server"
           "tailwindcss-ls"
@@ -201,6 +210,7 @@ in
       # tsx lsp
       {
         name = "tsx";
+        auto-format = true;
         language-servers = [
           "typescript-language-server"
           "tailwindcss-ls"
@@ -211,6 +221,23 @@ in
           args = [
             "--stdin-filepath"
             "%{buffer_name}"
+          ];
+        };
+      }
+
+      # markdown lsp
+      {
+        name = "markdown";
+        auto-format = true;
+        language-servers = [
+          "marksman"
+        ];
+        formatter = {
+          command = "mdformat";
+          args = [
+            "--wrap"
+            "80"
+            "-"
           ];
         };
       }
