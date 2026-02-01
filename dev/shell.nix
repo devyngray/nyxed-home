@@ -50,6 +50,11 @@ in
       nix-direnv.enable = true;
     };
 
+    # openai codex
+    programs.codex = {
+      enable = true;
+    };
+
     # better ls aliased as ls
     programs.eza = {
       enable = true;
