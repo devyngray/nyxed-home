@@ -21,6 +21,10 @@ in
       # haskell
       pkgs.haskell-language-server
 
+      # ocaml
+      pkgs.ocamlPackages.ocaml-lsp
+      pkgs.ocamlformat_0_26_2
+
       # python
       pkgs.ruff
       pkgs.python3Packages.python-lsp-server
@@ -221,6 +225,18 @@ in
           args = [
             "--stdin-filepath"
             "%{buffer_name}"
+          ];
+        };
+      }
+
+      # ocaml
+      {
+        name = "ocaml";
+        formatter = {
+          command = "ocamlformat";
+          args = [
+            "-"
+            "--impl"
           ];
         };
       }
