@@ -232,6 +232,7 @@ in
       # ocaml
       {
         name = "ocaml";
+        auto-format = true;
         formatter = {
           command = "ocamlformat";
           args = [
