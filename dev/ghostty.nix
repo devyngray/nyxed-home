@@ -8,6 +8,11 @@ in
       enable = true;
       settings = {
         theme = "Gruvbox Dark";
+        font-feature = [
+          "-calt"
+          "-liga"
+          "-dlig"
+        ];
         mouse-hide-while-typing = true;
         keybind = [
           "ctrl+b>h=goto_split:left"
