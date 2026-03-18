@@ -8,11 +8,8 @@ in
       enable = true;
       settings = {
         theme = "Gruvbox Dark";
-        font-feature = [
-          "-calt"
-          "-liga"
-          "-dlig"
-        ];
+        font-feature = "-calt, -liga, -dlig";
+        shell-integration-features = "ssh-terminfo,ssh-env";
         mouse-hide-while-typing = true;
         keybind = [
           "ctrl+b>h=goto_split:left"
