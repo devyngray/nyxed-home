@@ -50,7 +50,7 @@ in
 
     # openai codex
     programs.codex = {
-      enable = true;
+      enable = cfg.aiEnable;
     };
   };
 }
