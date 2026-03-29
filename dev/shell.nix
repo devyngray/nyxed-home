@@ -85,5 +85,10 @@ in
     programs.codex = {
       enable = cfg.aiEnable;
     };
+
+    # claude code
+    programs.claude-code = {
+      enable = cfg.aiEnable;
+    };
   };
 }
