@@ -15,33 +15,32 @@ in
       enable = true;
       extraConfig = ''
         let carapace_completer = {|spans|
-        carapace $spans.0 nushell ...$spans | from json
+          carapace $spans.0 nushell ...$spans | from json
         }
+
         $env.config = {
-         table: {
-           mode: "compact",
-         },
-         show_banner: false,
-         completions: {
-         case_sensitive: false # case-sensitive completions
-         quick: true    # set to false to prevent auto-selecting completions
-         partial: true    # set to false to prevent partial filling of the prompt
-         algorithm: "fuzzy"    # prefix or fuzzy
-         external: {
-         # set to false to prevent nushell looking into $env.PATH to find more suggestions
-             enable: true 
-         # set to lower can improve completion performance at the cost of omitting some options
-             max_results: 100 
-             completer: $carapace_completer # check 'carapace_completer' 
-           }
-         }
-        } 
+          show_banner: false
+          table: {
+            mode: compact
+          }
+          completions: {
+            case_sensitive: false
+            quick: true
+            partial: true
+            algorithm: fuzzy
+            external: {
+              enable: true
+              max_results: 100
+              completer: $carapace_completer
+            }
+          }
+        }
       '';
     };
 
     programs.carapace = {
       enable = true;
-      enableNushellIntegration = true;
+      enableNushellIntegration = false;
     };
 
     home.sessionVariables = {
@@ -49,6 +48,10 @@ in
     };
 
     home.packages = with pkgs; [
+      # clipboard
+      wl-clipboard
+      xclip
+
       # global python for repl
       python3
       uv
@@ -79,16 +82,6 @@ in
       enableNushellIntegration = true;
       nix-direnv.enable = true;
       silent = true;
-    };
-
-    # openai codex
-    programs.codex = {
-      enable = cfg.aiEnable;
-    };
-
-    # claude code
-    programs.claude-code = {
-      enable = cfg.aiEnable;
     };
   };
 }

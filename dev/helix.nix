@@ -6,6 +6,30 @@
 }:
 let
   cfg = config.nyxed-home-dev;
+
+  prettierFmt = {
+    command = "prettier";
+    args = [
+      "--stdin-filepath"
+      "%{buffer_name}"
+    ];
+  };
+
+  webLangs = map (name: {
+    inherit name;
+    auto-format = true;
+    language-servers = [
+      "typescript-language-server"
+      "tailwindcss-ls"
+      "vscode-eslint-language-server"
+    ];
+    formatter = prettierFmt;
+  }) [
+    "javascript"
+    "typescript"
+    "jsx"
+    "tsx"
+  ];
 in
 {
   config = lib.mkIf cfg.enable {
@@ -52,231 +76,120 @@ in
       pkgs.python3Packages.mdformat
     ];
 
-    # set helix to default editor
     programs.helix = {
       enable = true;
       defaultEditor = true;
-    };
 
-    # configure helix settings
-    programs.helix.settings = {
-      theme = "gruvbox";
-      editor = {
-        bufferline = "multiple";
-        cursor-shape = {
-          insert = "bar";
-          normal = "block";
+      settings = {
+        theme = "gruvbox";
+        editor = {
+          bufferline = "multiple";
+          cursor-shape = {
+            insert = "bar";
+            normal = "block";
+          };
+          file-picker = {
+            hidden = false;
+          };
+          line-number = "relative";
+          rulers = [ 120 ];
+          whitespace = {
+            render = "all";
+          };
         };
-        file-picker = {
-          hidden = false;
-        };
-        line-number = "relative";
-        rulers = [ 120 ];
-        whitespace = {
-          render = "all";
-        };
-      };
-      keys = {
-        normal = {
-          space = {
-            F = "file_picker_in_current_directory";
-            t = ":toggle-option lsp.display-inlay-hints";
+        keys = {
+          normal = {
+            space = {
+              F = "file_picker_in_current_directory";
+              t = ":toggle-option lsp.display-inlay-hints";
+            };
           };
         };
       };
-    };
 
-    # setup auto-formatters
-    programs.helix.languages.language = [
-      # nix auto-format
-      {
-        name = "nix";
-        auto-format = true;
-        formatter.command = "nixfmt";
-      }
-
-      # rust auto-format
-      {
-        name = "rust";
-        auto-format = true;
-        formatter.command = "rustfmt";
-      }
-
-      # python auto-format
-      {
-        name = "python";
-        auto-format = true;
-        language-servers = [
+      languages.language =
+        [
           {
-            name = "pylsp";
-            except-features = [ "format" ];
+            name = "nix";
+            auto-format = true;
+            formatter.command = "nixfmt";
           }
-          "ruff"
-        ];
-      }
+          {
+            name = "rust";
+            auto-format = true;
+            formatter.command = "rustfmt";
+          }
+          {
+            name = "python";
+            auto-format = true;
+            language-servers = [
+              {
+                name = "pylsp";
+                except-features = [ "format" ];
+              }
+              "ruff"
+            ];
+          }
+          {
+            name = "html";
+            auto-format = true;
+            language-servers = [ "vscode-html-language-server" ];
+            formatter = prettierFmt;
+          }
+          {
+            name = "css";
+            auto-format = true;
+            language-servers = [ "vscode-css-language-server" ];
+            formatter = prettierFmt;
+          }
+          {
+            name = "json";
+            auto-format = true;
+            language-servers = [ "vscode-json-language-server" ];
+            formatter = prettierFmt;
+          }
+          {
+            name = "ocaml";
+            auto-format = true;
+            formatter = {
+              command = "ocamlformat";
+              args = [
+                "-"
+                "--impl"
+              ];
+            };
+          }
+          {
+            name = "markdown";
+            auto-format = true;
+            language-servers = [ "marksman" ];
+            formatter = {
+              command = "mdformat";
+              args = [
+                "--wrap"
+                "80"
+                "-"
+              ];
+            };
+          }
+        ]
+        ++ webLangs;
 
-      # html lsp
-      {
-        name = "html";
-        auto-format = true;
-        language-servers = [ "vscode-html-language-server" ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
+      languages.language-server = {
+        pylsp.config.pylsp.plugins = {
+          autopep8.enabled = false;
+          mccabe.enabled = false;
+          pycodestyle.enabled = false;
+          pyflakes.enabled = false;
+          pylint.enabled = false;
+          ruff.enabled = false;
+          yapf.enabled = false;
         };
-      }
 
-      # css lsp
-      {
-        name = "css";
-        auto-format = true;
-        language-servers = [ "vscode-css-language-server" ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
+        rust-analyzer.config = {
+          cargo.features = "all";
+          check.command = "clippy";
         };
-      }
-
-      # json lsp
-      {
-        name = "json";
-        auto-format = true;
-        language-servers = [ "vscode-json-language-server" ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
-        };
-      }
-
-      # javascript lsp
-      {
-        name = "javascript";
-        auto-format = true;
-        language-servers = [
-          "typescript-language-server"
-          "tailwindcss-ls"
-          "vscode-eslint-language-server"
-        ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
-        };
-      }
-
-      # typescript lsp
-      {
-        name = "typescript";
-        auto-format = true;
-        language-servers = [
-          "typescript-language-server"
-          "tailwindcss-ls"
-          "vscode-eslint-language-server"
-        ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
-        };
-      }
-
-      # jsx lsp
-      {
-        name = "jsx";
-        auto-format = true;
-        language-servers = [
-          "typescript-language-server"
-          "tailwindcss-ls"
-          "vscode-eslint-language-server"
-        ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
-        };
-      }
-
-      # tsx lsp
-      {
-        name = "tsx";
-        auto-format = true;
-        language-servers = [
-          "typescript-language-server"
-          "tailwindcss-ls"
-          "vscode-eslint-language-server"
-        ];
-        formatter = {
-          command = "prettier";
-          args = [
-            "--stdin-filepath"
-            "%{buffer_name}"
-          ];
-        };
-      }
-
-      # ocaml
-      {
-        name = "ocaml";
-        auto-format = true;
-        formatter = {
-          command = "ocamlformat";
-          args = [
-            "-"
-            "--impl"
-          ];
-        };
-      }
-
-      # markdown lsp
-      {
-        name = "markdown";
-        auto-format = true;
-        language-servers = [
-          "marksman"
-        ];
-        formatter = {
-          command = "mdformat";
-          args = [
-            "--wrap"
-            "80"
-            "-"
-          ];
-        };
-      }
-    ];
-
-    # language-server overrides
-    programs.helix.languages.language-server = {
-      # disable python lsp plugins
-      pylsp.config.pylsp.plugins = {
-        autopep8.enabled = false;
-        mccabe.enabled = false;
-        pycodestyle.enabled = false;
-        pyflakes.enabled = false;
-        pylint.enabled = false;
-        ruff.enabled = false;
-        yapf.enabled = false;
-      };
-
-      # setup rust lsp
-      rust-analyzer.config = {
-        cargo.features = "all";
-        check.command = "clippy";
       };
     };
   };

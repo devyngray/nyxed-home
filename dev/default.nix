@@ -4,12 +4,12 @@
     ./ghostty.nix
     ./helix.nix
     ./shell.nix
+    ./tmux.nix
     ./vcs.nix
   ];
 
   options.nyxed-home-dev = {
     enable = lib.mkEnableOption "Enable nyxed-home-dev home-manager module";
-    aiEnable = lib.mkEnableOption "Include AI related packages";
     vcsName = lib.mkOption {
       type = lib.types.str;
       default = "Devyn Gray";
