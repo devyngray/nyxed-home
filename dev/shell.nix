@@ -76,6 +76,7 @@ in
       # file explorer
       yazi = {
         enable = true;
+        shellWrapperName = "y";
         enableNushellIntegration = true;
       };
 
