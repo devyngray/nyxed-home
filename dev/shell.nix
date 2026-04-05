@@ -9,79 +9,83 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    programs.bash.enable = true;
+    home = {
+      sessionVariables = {
+        PAGER = "less -FR";
+      };
 
-    programs.nushell = {
-      enable = true;
-      extraConfig = ''
-        let carapace_completer = {|spans|
-          carapace $spans.0 nushell ...$spans | from json
-        }
+      packages = with pkgs; [
+        # clipboard
+        wl-clipboard
+        xclip
 
-        $env.config = {
-          show_banner: false
-          table: {
-            mode: compact
+        # global python for repl
+        python3
+        uv
+
+        # utils
+        file
+        zip
+        unzip
+        ripgrep
+        rclone
+      ];
+    };
+
+    programs = {
+      bash.enable = true;
+
+      nushell = {
+        enable = true;
+        extraConfig = ''
+          let carapace_completer = {|spans|
+            carapace $spans.0 nushell ...$spans | from json
           }
-          completions: {
-            case_sensitive: false
-            quick: true
-            partial: true
-            algorithm: fuzzy
-            external: {
-              enable: true
-              max_results: 100
-              completer: $carapace_completer
+
+          $env.config = {
+            show_banner: false
+            table: {
+              mode: compact
+            }
+            completions: {
+              case_sensitive: false
+              quick: true
+              partial: true
+              algorithm: fuzzy
+              external: {
+                enable: true
+                max_results: 100
+                completer: $carapace_completer
+              }
             }
           }
-        }
-      '';
-    };
+        '';
+      };
 
-    programs.carapace = {
-      enable = true;
-      enableNushellIntegration = false;
-    };
+      carapace = {
+        enable = true;
+        enableNushellIntegration = false;
+      };
 
-    home.sessionVariables = {
-      PAGER = "less -FR";
-    };
+      # better cd aliased to z
+      zoxide = {
+        enable = true;
+        enableNushellIntegration = true;
+      };
 
-    home.packages = with pkgs; [
-      # clipboard
-      wl-clipboard
-      xclip
+      # file explorer
+      yazi = {
+        enable = true;
+        enableNushellIntegration = true;
+      };
 
-      # global python for repl
-      python3
-      uv
-
-      # utils
-      file
-      zip
-      unzip
-      ripgrep
-      rclone
-    ];
-
-    # better cd aliased to z
-    programs.zoxide = {
-      enable = true;
-      enableNushellIntegration = true;
-    };
-
-    # file explorer
-    programs.yazi = {
-      enable = true;
-      enableNushellIntegration = true;
-    };
-
-    # direnv
-    programs.direnv = {
-      enable = true;
-      enableNushellIntegration = true;
-      nix-direnv.enable = true;
-      silent = true;
+      # direnv
+      direnv = {
+        enable = true;
+        enableNushellIntegration = true;
+        nix-direnv.enable = true;
+        silent = true;
+      };
     };
   };
 }
