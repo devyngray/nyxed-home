@@ -12,6 +12,7 @@ in
     programs.tmux = {
       enable = true;
       prefix = "C-b";
+      shell = "${pkgs.nushell}/bin/nu";
       keyMode = "vi";
       mouse = true;
       terminal = "tmux-256color";
