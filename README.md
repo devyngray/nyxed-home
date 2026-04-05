@@ -4,10 +4,10 @@ Composable home-manager modules for setting up dev environments across machines.
 
 ## Modules
 
-| Module | Description |
-|--------|-------------|
-| `nyxed-home-dev` | Dev tooling: Helix, Ghostty, tmux, Nushell, jujutsu, direnv, and language servers |
-| `nyxed-home-plasma` | KDE Plasma desktop: Firefox, keybindings, touchpad, theming |
+| Module | Description | |--------|-------------| | `nyxed-home-dev` | Dev
+tooling: Helix, Ghostty, tmux, Nushell, jujutsu, direnv, and language servers |
+| `nyxed-home-plasma` | KDE Plasma desktop: Firefox, keybindings, touchpad,
+theming |
 
 ## Usage
 
@@ -36,6 +36,22 @@ Add this flake as an input and import the modules you need:
     };
   };
 }
+```
+
+## Testing locally
+
+Build the test configuration and inspect the generated dotfiles without
+activating anything:
+
+```sh
+home-manager build --flake .#test
+ls result/home-files/.config/  # browse generated configs (helix, ghostty, tmux, etc.)
+```
+
+To test in your NixOS config, override the input to your local checkout:
+
+```sh
+sudo nixos-rebuild switch --flake .# --override-input nyxed-home path:/path/to/nyxed-home
 ```
 
 ## Development

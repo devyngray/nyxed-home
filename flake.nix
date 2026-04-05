@@ -28,6 +28,21 @@
         nyxed-home-plasma = import ./plasma;
       };
 
+      homeConfigurations.test = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          self.homeManagerModules.nyxed-home-dev
+          {
+            nyxed-home-dev.enable = true;
+            home = {
+              stateVersion = "24.11";
+              username = "test";
+              homeDirectory = "/home/test";
+            };
+          }
+        ];
+      };
+
       checks = forAllSystems (
         system:
         let
@@ -59,10 +74,11 @@
         in
         {
           default = pkgs.mkShell {
-            packages = with pkgs; [
-              nixfmt
-              statix
-              deadnix
+            packages = [
+              home-manager.packages.${system}.home-manager
+              pkgs.nixfmt
+              pkgs.statix
+              pkgs.deadnix
             ];
           };
         }
