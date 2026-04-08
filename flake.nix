@@ -24,6 +24,7 @@
     in
     {
       homeManagerModules = {
+        nyxed-home-ai = import ./ai;
         nyxed-home-dev = import ./dev;
         nyxed-home-plasma = import ./plasma;
       };
@@ -49,6 +50,21 @@
           pkgs = nixpkgs.legacyPackages.${system};
         in
         {
+          nyxed-home-ai =
+            (home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [
+                self.homeManagerModules.nyxed-home-ai
+                {
+                  nyxed-home-ai.enable = true;
+                  home = {
+                    stateVersion = "24.11";
+                    username = "ci";
+                    homeDirectory = "/home/ci";
+                  };
+                }
+              ];
+            }).activationPackage;
           nyxed-home-dev =
             (home-manager.lib.homeManagerConfiguration {
               inherit pkgs;
